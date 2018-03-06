@@ -8,10 +8,9 @@
 <meta charset="UTF-8">
 <title>ユーザー情報</title>
 <jsp:include page="/baselayout/head.html" />
-<%
-	String validationMessage = (String) request.getAttribute("validationMessage");
+<% String validationMessage = (String) request.getAttribute("validationMessage");
 	UserDataBeans udb = (UserDataBeans)request.getAttribute("udb");
-%>
+	ArrayList<BuyDataBeans> bdb = (ArrayList<BuyDataBeans>)request.getAttribute("bdb"); %>
 </head>
 <body>
 	<jsp:include page="/baselayout/header.jsp" />
@@ -26,25 +25,21 @@
 				<div class="card grey lighten-5">
 					<div class="card-content">
 						<form action="UserDataUpdateConfirm" method="POST">
-							<%
-								if (validationMessage != null) {
-							%>
+							<% if (validationMessage != null) { %>
 							<p class="red-text center-align"><%=validationMessage%></p>
-							<%
-								}
-							%>
+							<% } %>
 							<br> <br>
 							<div class="row">
 								<div class="input-field col s6">
-									<input type="text" name="user_name" value="<%=udb.getName()%>"> <label>名前</label>
+									<input type="text" name="user_name" value="<%= udb.getName() %>"> <label>名前</label>
 								</div>
 								<div class="input-field col s6">
-									<input type="text" name="login_id" value="<%=udb.getLoginId()%>"> <label>ログインID</label>
+									<input type="text" name="login_id" value="<%= udb.getLoginId() %>"> <label>ログインID</label>
 								</div>
 							</div>
 							<div class="row">
 								<div class="input-field col s12">
-									<input type="text" name="user_address" value="<%=udb.getAddress()%>"> <label>住所</label>
+									<input type="text" name="user_address" value="<%= udb.getAddress() %>"> <label>住所</label>
 								</div>
 							</div>
 							<div class="row">
@@ -72,19 +67,23 @@
 								</tr>
 							</thead>
 							<tbody>
+							 <% for (BuyDataBeans b:bdb) { %>
+								<tr>
 
-								<tr>
-									<td class="center"><a href="UserBuyHistoryDetail?buy_id=1" class="btn-floating btn waves-effect waves-light "> <i class="material-icons">details</i></a></td>
-									<td class="center">1234年56月78日90時12分</td>
-									<td class="center">サンプル配送料金</td>
-									<td class="center"><123456789円円</td>
+									<form action="UserBuyHistoryDetail" method="POST" style=" display: inline; ">
+									    <td class="center"><button class="btn-floating btn waves-effect waves-light "><i class="material-icons">details</i></button></td>
+										<td class="center"><%= b.getFormatDate()%></td>
+										<td class="center"><%= b.getDeliveryMethodName()%></td>
+										<td class="center"><%= b.getTotalPrice() %>円</td>
+										<input type="hidden"  name="id" value=<%= b.getId()%>>
+										<input type="hidden"  name="formatDate" value=<%= b.getFormatDate()%>>
+										<input type="hidden"  name="deliveryMethodName" value=<%= b.getDeliveryMethodName()%>>
+										<input type="hidden"  name="deliveryMethodPrice" value=<%= b.getDeliveryMethodPrice()%>>
+										<input type="hidden"  name="totalPrice" value=<%= b.getTotalPrice()%>>
+									</form>
 								</tr>
-								<tr>
-									<td class="center"><a href="UserBuyHistoryDetail?buy_id=2" class="btn-floating btn waves-effect waves-light "> <i class="material-icons">details</i></a></td>
-									<td class="center">1234年56月78日90時12分</td>
-									<td class="center">サンプル配送料金</td>
-									<td class="center"><123456789円円</td>
-								</tr>
+								<% } %>
+
 
 							</tbody>
 						</table>
