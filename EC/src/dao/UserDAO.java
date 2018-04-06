@@ -10,11 +10,7 @@ import base.DBManager;
 import beans.UserDataBeans;
 import ec.EcHelper;
 
-/**
- *
- * @author d-yamaguchi
- *
- */
+
 public class UserDAO {
 	// インスタンスオブジェクトを返却させてコードの簡略化
 	public static UserDAO getInstance() {
